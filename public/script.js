@@ -51,7 +51,7 @@ gayaCSS.innerHTML = `
 
     /* Desain khusus tombol Admin */
     .btn-admin {
-        color: #f1c40f; /* Warna kuning emas */
+        color: #f1c40f; 
     }
     .btn-admin:hover {
         border-color: #f1c40f;
@@ -114,8 +114,8 @@ document.body.innerHTML = `
             <button id="btn-profil" onclick="bukaHalaman('profil')">Profil</button>
             <button id="btn-project" onclick="bukaHalaman('project')">Project</button>
             
-            <!-- Tombol baru untuk pindah ke halaman Admin -->
-            <button class="btn-admin" onclick="window.location.href='../admin/index.html'">Admin 🔒</button>
+            <!-- Tombol Admin sekarang memanggil fungsi loginAdmin() -->
+            <button class="btn-admin" onclick="loginAdmin()">Admin 🔒</button>
         </nav>
     </header>
     
@@ -162,15 +162,12 @@ const kontenHalaman = {
 function bukaHalaman(namaHalaman) {
     document.getElementById("kontenUtama").innerHTML = kontenHalaman[namaHalaman];
     
-    // Reset warna semua tombol menu biasa
     document.getElementById("btn-beranda").classList.remove('aktif');
     document.getElementById("btn-profil").classList.remove('aktif');
     document.getElementById("btn-project").classList.remove('aktif');
     
-    // Beri warna khusus pada tombol yang sedang diklik
     document.getElementById("btn-" + namaHalaman).classList.add('aktif');
 
-    // Jika buka menu project, panggil fungsi load data
     if (namaHalaman === 'project') tampilkanPortofolio();
 }
 
@@ -194,6 +191,28 @@ function tampilkanPortofolio() {
         `;
         wadahProyek.appendChild(card);
     });
+}
+
+// 6. FUNGSI BARU: Logika Login Admin
+function loginAdmin() {
+    // Memunculkan pop-up input
+    const inputEmail = prompt("Masukkan email Anda untuk mengakses mode Admin:");
+    
+    // Cek apakah user menekan "Cancel" atau mengosongkan input
+    if (inputEmail === null || inputEmail === "") {
+        return; // Batalkan proses tanpa pesan error
+    }
+    
+    // GANTI TEKS DI BAWAH INI DENGAN EMAIL ASLIMU
+    const emailSaya = "emailkamu@gmail.com"; 
+    
+    // Proses pencocokan
+    if (inputEmail === emailSaya) {
+        alert("Akses diizinkan! Mengalihkan ke halaman Admin...");
+        window.location.href = '../admin/index.html';
+    } else {
+        alert("Akses ditolak! Email yang Anda masukkan salah.");
+    }
 }
 
 // Jalankan otomatis saat web dibuka
