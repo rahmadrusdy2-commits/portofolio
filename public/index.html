@@ -1,1 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Portofolio</title>
+</head>
+<body>
 
+    <!-- Navigasi Menu (Memanggil fungsi JavaScript saat diklik) -->
+    <nav>
+        <button onclick="bukaHalaman('beranda')">Beranda</button>
+        <button onclick="bukaHalaman('profil')">Profil</button>
+        <button onclick="bukaHalaman('project')">Project</button>
+        <button onclick="bukaHalaman('galeri')">Galeri</button>
+        <button onclick="bukaHalaman('kontak')">Kontak</button>
+    </nav>
+
+    <hr>
+
+    <!-- Ini adalah wadah kosong yang isinya akan diganti-ganti oleh JavaScript -->
+    <div id="kontenUtama"></div>
+
+    <!-- Menghubungkan ke file JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
