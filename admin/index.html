@@ -1,1 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Web Portofolio</title>
+</head>
+<body>
+    <h2>Input Data Project Baru</h2>
+    
+    <!-- Link untuk kembali ke halaman public -->
+    <p><a href="../public/index.html" target="_blank">Lihat Halaman Public 🚀</a></p>
+    <hr>
 
+    <!-- Form Inputan -->
+    <form id="formProject">
+        <label for="judulInput">Judul Project:</label><br>
+        <input type="text" id="judulInput" required style="width: 300px;"><br><br>
+
+        <label for="deskripsiInput">Deskripsi Singkat:</label><br>
+        <textarea id="deskripsiInput" rows="4" required style="width: 300px;"></textarea><br><br>
+
+        <button type="submit">Simpan Project</button>
+    </form>
+
+    <hr>
+    
+    <!-- Tempat menampilkan project yang sudah diinput -->
+    <h3>Daftar Project Tersimpan:</h3>
+    <ul id="listProjectAdmin"></ul>
+
+    <!-- Menghubungkan ke file JavaScript Admin -->
+    <script src="admin.js"></script>
+</body>
+</html>
