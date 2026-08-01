@@ -1,6 +1,6 @@
 // public/script.js
 
-// 1. JavaScript menyuntikkan kode CSS (Desain) yang sudah diperkaya
+// 1. JavaScript menyuntikkan kode CSS
 const gayaCSS = document.createElement('style');
 gayaCSS.innerHTML = `
     /* Reset & Dasar */
@@ -30,6 +30,7 @@ gayaCSS.innerHTML = `
     nav { 
         display: flex; 
         justify-content: center;
+        flex-wrap: wrap;
         gap: 15px; 
     }
     nav button { 
@@ -48,6 +49,15 @@ gayaCSS.innerHTML = `
         color: #3498db;
     }
 
+    /* Desain khusus tombol Admin */
+    .btn-admin {
+        color: #f1c40f; /* Warna kuning emas */
+    }
+    .btn-admin:hover {
+        border-color: #f1c40f;
+        background-color: rgba(241, 196, 15, 0.1);
+    }
+
     /* Konten Utama */
     #kontenUtama { 
         background-color: white; 
@@ -57,7 +67,7 @@ gayaCSS.innerHTML = `
         max-width: 800px;
         border-radius: 12px; 
         box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
-        flex-grow: 1; /* Mendorong footer ke bawah */
+        flex-grow: 1; 
         line-height: 1.6;
     }
     
@@ -103,6 +113,9 @@ document.body.innerHTML = `
             <button id="btn-beranda" onclick="bukaHalaman('beranda')">Beranda</button>
             <button id="btn-profil" onclick="bukaHalaman('profil')">Profil</button>
             <button id="btn-project" onclick="bukaHalaman('project')">Project</button>
+            
+            <!-- Tombol baru untuk pindah ke halaman Admin -->
+            <button class="btn-admin" onclick="window.location.href='../admin/index.html'">Admin 🔒</button>
         </nav>
     </header>
     
@@ -113,7 +126,7 @@ document.body.innerHTML = `
     </footer>
 `;
 
-// 3. Data Konten Halaman (Sudah diperkaya dengan teks dan gambar)
+// 3. Data Konten Halaman
 const kontenHalaman = {
     beranda: `
         <h2>Halo, Selamat Datang! 👋</h2>
@@ -124,7 +137,6 @@ const kontenHalaman = {
     profil: `
         <h2>Tentang Saya</h2>
         <div class="profil-container">
-            <!-- Gambar dari internet (placeholder), kamu bisa menggantinya dengan link foto aslimu nanti -->
             <img class="foto-profil" src="https://ui-avatars.com/api/?name=JS+Dev&background=3498db&color=fff&size=200" alt="Foto Profil">
         </div>
         <p>Saya adalah seorang pengembang yang bersemangat mempelajari teknologi web modern. Saat ini saya berfokus pada eksplorasi kemampuan JavaScript murni (Vanilla JS) untuk membangun antarmuka yang dinamis dan interaktif.</p>
@@ -146,12 +158,11 @@ const kontenHalaman = {
     `
 };
 
-// 4. Fungsi JavaScript untuk mengganti halaman dan mengatur tombol aktif
+// 4. Fungsi JavaScript untuk mengganti halaman
 function bukaHalaman(namaHalaman) {
-    // Ganti isi konten
     document.getElementById("kontenUtama").innerHTML = kontenHalaman[namaHalaman];
     
-    // Reset warna semua tombol menu
+    // Reset warna semua tombol menu biasa
     document.getElementById("btn-beranda").classList.remove('aktif');
     document.getElementById("btn-profil").classList.remove('aktif');
     document.getElementById("btn-project").classList.remove('aktif');
@@ -169,7 +180,7 @@ function tampilkanPortofolio() {
     let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
     
     if (daftarProyek.length === 0) {
-        wadahProyek.innerHTML = "<p style='text-align:center; color:#7f8c8d; font-style:italic;'>Belum ada project yang ditambahkan.<br>Silakan tambahkan melalui halaman Admin.</p>";
+        wadahProyek.innerHTML = "<p style='text-align:center; color:#7f8c8d; font-style:italic;'>Belum ada project yang ditambahkan.<br>Silakan masuk ke menu Admin untuk menambahkan.</p>";
         return;
     }
     
@@ -177,7 +188,6 @@ function tampilkanPortofolio() {
     daftarProyek.forEach(proyek => {
         let card = document.createElement("div");
         card.className = "card-project";
-        // Menampilkan data
         card.innerHTML = `
             <h3>${proyek.judul}</h3>
             <p>${proyek.deskripsi}</p>
