@@ -34,13 +34,13 @@ function bukaHalaman(namaHalaman) {
     // Memasukkan konten HTML dari objek ke dalam wadah di layar
     wadah.innerHTML = kontenHalaman[namaHalaman];
 
-    // Khusus jika membuka halaman 'project', kita panggil fungsi untuk mengambil data (dari script sebelumnya)
+    // Khusus jika membuka halaman 'project', kita panggil fungsi untuk mengambil data
     if (namaHalaman === 'project') {
         tampilkanPortofolio();
     }
 }
 
-// 3. Fungsi untuk mengambil data project (yang nanti diinput dari halaman Admin)
+// 3. Fungsi untuk mengambil data project (yang diinput dari halaman Admin)
 function tampilkanPortofolio() {
     const wadahProyek = document.getElementById("daftarProyek");
     
@@ -58,7 +58,10 @@ function tampilkanPortofolio() {
     // Gunakan perulangan JavaScript untuk menampilkan semua data
     daftarProyek.forEach(proyek => {
         let card = document.createElement("div");
-        card.innerHTML = `<h3>${proyek.judul}</h3>`;
+        
+        // Bagian ini sudah diperbarui untuk menampilkan judul dan deskripsi
+        card.innerHTML = `<h3>${proyek.judul}</h3><p>${proyek.deskripsi}</p><hr>`;
+        
         wadahProyek.appendChild(card);
     });
 }
