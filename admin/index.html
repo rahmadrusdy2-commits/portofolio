@@ -1,35 +1,91 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin - Web Portofolio</title>
-</head>
-<body>
-    <h2>Input Data Project Baru</h2>
+// admin/admin.js
+
+// 1. JavaScript menyuntikkan CSS Admin
+const cssAdmin = document.createElement('style');
+cssAdmin.innerHTML = `
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f8f9fa; padding: 20px; color: #333; }
+    .container { background: white; padding: 30px; border-radius: 12px; max-width: 600px; margin: 30px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    h2 { color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
+    input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+    button { background: #27ae60; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 6px; font-weight: bold; }
+    button:hover { background: #2ecc71; }
+    .btn-hapus { background: #e74c3c; margin-top: 10px; padding: 6px 12px; font-size: 12px; }
+    .btn-hapus:hover { background: #c0392b; }
+    ul { list-style-type: none; padding: 0; }
+    li { background: #fdfdfd; padding: 15px; margin-bottom: 15px; border-left: 5px solid #3498db; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    a { color: #3498db; text-decoration: none; font-weight: bold; }
+    a:hover { text-decoration: underline; }
+`;
+document.head.appendChild(cssAdmin);
+
+// 2. JavaScript membangun form HTML Admin di layar
+document.body.innerHTML = `
+    <div class="container">
+        <h2>Panel Admin Portofolio</h2>
+        <p><a href="../public/index.html">⬅ Kembali ke Halaman Public</a></p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        
+        <form id="formProject">
+            <label for="judulInput"><strong>Judul Project:</strong></label>
+            <input type="text" id="judulInput" placeholder="Contoh: Aplikasi Kasir JS" required>
+            
+            <label for="deskripsiInput"><strong>Deskripsi Singkat:</strong></label>
+            <textarea id="deskripsiInput" placeholder="Jelaskan singkat tentang project ini..." rows="4" required></textarea>
+            
+            <button type="submit">Simpan Project Baru</button>
+        </form>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+        
+        <h3>Daftar Project Tersimpan:</h3>
+        <ul id="listProjectAdmin"></ul>
+    </div>
+`;
+
+// 3. Logika JavaScript untuk menyimpan dan menampilkan data
+const formProject = document.getElementById("formProject");
+const listProjectAdmin = document.getElementById("listProjectAdmin");
+
+function tampilkanProjectAdmin() {
+    let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
+    listProjectAdmin.innerHTML = "";
     
-    <!-- Link untuk kembali ke halaman public -->
-    <p><a href="../public/index.html" target="_blank">Lihat Halaman Public 🚀</a></p>
-    <hr>
-
-    <!-- Form Inputan -->
-    <form id="formProject">
-        <label for="judulInput">Judul Project:</label><br>
-        <input type="text" id="judulInput" required style="width: 300px;"><br><br>
-
-        <label for="deskripsiInput">Deskripsi Singkat:</label><br>
-        <textarea id="deskripsiInput" rows="4" required style="width: 300px;"></textarea><br><br>
-
-        <button type="submit">Simpan Project</button>
-    </form>
-
-    <hr>
+    if (daftarProyek.length === 0) {
+        listProjectAdmin.innerHTML = "<p style='color: #7f8c8d; font-style: italic;'>Belum ada project yang diinput.</p>";
+        return;
+    }
     
-    <!-- Tempat menampilkan project yang sudah diinput -->
-    <h3>Daftar Project Tersimpan:</h3>
-    <ul id="listProjectAdmin"></ul>
+    daftarProyek.forEach((proyek, index) => {
+        let li = document.createElement("li");
+        li.innerHTML = `
+            <strong>${proyek.judul}</strong><br>
+            <p style="margin: 5px 0 10px 0; color: #555;">${proyek.deskripsi}</p>
+            <button class="btn-hapus" onclick="hapusProject(${index})">Hapus Project</button>
+        `;
+        listProjectAdmin.appendChild(li);
+    });
+}
 
-    <!-- Menghubungkan ke file JavaScript Admin -->
-    <script src="admin.js"></script>
-</body>
-</html>
+formProject.addEventListener("submit", function(event) {
+    event.preventDefault();
+    let judul = document.getElementById("judulInput").value;
+    let deskripsi = document.getElementById("deskripsiInput").value;
+    
+    let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
+    daftarProyek.push({ judul: judul, deskripsi: deskripsi });
+    localStorage.setItem("proyek", JSON.stringify(daftarProyek));
+    
+    alert("Project berhasil disimpan!");
+    formProject.reset();
+    tampilkanProjectAdmin();
+});
+
+// Menghubungkan fungsi hapus ke object window agar bisa dipanggil lewat tombol HTML buatan JS
+window.hapusProject = function(index) {
+    let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
+    daftarProyek.splice(index, 1);
+    localStorage.setItem("proyek", JSON.stringify(daftarProyek));
+    tampilkanProjectAdmin();
+};
+
+window.onload = tampilkanProjectAdmin;
