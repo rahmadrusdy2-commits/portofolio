@@ -49,7 +49,7 @@ document.body.innerHTML = `
     
     <div id="kontenUtama">
         <h2>Project Saya</h2>
-        <p>Berikut adalah beberapa project yang pernah saya kerjakan.</p>
+        <p>Berikut adalah beberapa project yang pernah dikerjakan.</p>
         <div id="daftarProyek">
             <p>Memuat project...</p>
         </div>
@@ -60,7 +60,6 @@ document.body.innerHTML = `
     </footer>
 `;
 
-// Fungsi memanggil data project
 window.tampilkanPortofolio = function() {
     const wadahProyek = document.getElementById("daftarProyek");
     let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
@@ -81,7 +80,7 @@ window.tampilkanPortofolio = function() {
         wadahProyek.appendChild(card);
     });
 }
-window.tampilkanPortofolio(); // Panggil fungsi saat layar terbuka
+window.tampilkanPortofolio();
 
 window.loginAdmin = function() {
     signInWithPopup(auth, provider)
@@ -92,7 +91,7 @@ window.loginAdmin = function() {
             if (emailUser === emailSaya) {
                 window.location.href = '../../admin/index.html';
             } else {
-                alert("Akses Ditolak! Akun Google ini tidak memiliki izin sebagai Admin.");
+                alert("Akses Ditolak!");
                 auth.signOut(); 
             }
         }).catch((error) => console.error(error));
