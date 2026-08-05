@@ -1,10 +1,6 @@
-// public/beranda/beranda.js
-
-// === 1. IMPORT FIREBASE ===
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-// KONFIGURASI FIREBASE ASLI KAMU
 const firebaseConfig = {
   apiKey: "AIzaSyCaEQdi5jLRDEdjnMxTjOOv6fvYmjnxC24",
   authDomain: "portofilio-43df6.firebaseapp.com",
@@ -19,7 +15,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// === 2. INJEKSI CSS ===
 const gayaCSS = document.createElement('style');
 gayaCSS.innerHTML = `
     body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
@@ -37,12 +32,10 @@ gayaCSS.innerHTML = `
 `;
 document.head.appendChild(gayaCSS);
 
-// === 3. MEMBANGUN HTML BERANDA ===
 document.body.innerHTML = `
     <header>
         <h1>Portofolio JS</h1>
         <nav id="menuUtama">
-            <!-- Tombol Beranda diatur aktif dan linknya mengarah ke folder yang sesuai -->
             <button class="aktif" onclick="window.location.href='index.html'">Beranda</button>
             <button onclick="window.location.href='../profil/index.html'">Profil</button>
             <button onclick="window.location.href='../project/index.html'">Project</button>
@@ -53,8 +46,7 @@ document.body.innerHTML = `
     <div id="kontenUtama">
         <h2>Halo, Selamat Datang! 👋</h2>
         <p>Terima kasih sudah berkunjung ke halaman portofolio saya.</p>
-        <p>Website ini dibangun menggunakan teknik yang unik, yaitu <strong>100% JavaScript</strong>, dan sekarang setiap halamannya memiliki foldernya masing-masing.</p>
-        <p>Silakan jelajahi menu di atas untuk mengenal saya lebih jauh.</p>
+        <p>Website ini dibangun menggunakan teknik <strong>100% JavaScript</strong> dengan struktur multi-folder.</p>
     </div>
     
     <footer>
@@ -62,26 +54,17 @@ document.body.innerHTML = `
     </footer>
 `;
 
-// === 4. FUNGSI LOGIN ADMIN ===
 window.loginAdmin = function() {
     signInWithPopup(auth, provider)
         .then((result) => {
             const emailUser = result.user.email;
-            
-            // GANTI DENGAN EMAIL ASLIMU
-            const emailSaya = "emailkamu@gmail.com"; 
+            const emailSaya = "emailkamu@gmail.com"; // Ganti dengan email Google kamu
 
             if (emailUser === emailSaya) {
-                alert("Akses diizinkan!");
-                // Melompat keluar 2 folder untuk menuju folder admin (dari public/beranda -> public -> utama -> admin)
                 window.location.href = '../../admin/index.html';
             } else {
-                alert("Akses Ditolak! Email tidak dikenali.");
+                alert("Akses Ditolak! Akun Google ini tidak memiliki izin sebagai Admin.");
                 auth.signOut(); 
             }
-        })
-        .catch((error) => {
-            console.error(error);
-            alert("Login dibatalkan.");
-        });
+        }).catch((error) => console.error(error));
 }
