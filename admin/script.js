@@ -1,39 +1,43 @@
-// Mengubah Judul Tab Browser menggunakan JavaScript
-document.title = "Panel Admin | Kelola Portofolio";
-
-// 1. JavaScript menyuntikkan CSS Admin
 const cssAdmin = document.createElement('style');
 cssAdmin.innerHTML = `
-    body { font-family: sans-serif; background: #ececec; padding: 20px; }
-    .container { background: white; padding: 20px; border-radius: 8px; max-width: 500px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-    input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-    button { background: #27ae60; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f8f9fa; padding: 20px; color: #333; }
+    .container { background: white; padding: 30px; border-radius: 12px; max-width: 600px; margin: 30px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    h2 { color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
+    input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+    button { background: #27ae60; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 6px; font-weight: bold; }
     button:hover { background: #2ecc71; }
-    .btn-hapus { background: #e74c3c; margin-top: 10px; padding: 5px 10px; }
+    .btn-hapus { background: #e74c3c; margin-top: 10px; padding: 6px 12px; font-size: 12px; }
+    .btn-hapus:hover { background: #c0392b; }
     ul { list-style-type: none; padding: 0; }
-    li { background: #f9f9f9; padding: 10px; margin-bottom: 10px; border-left: 4px solid #3498db; }
+    li { background: #fdfdfd; padding: 15px; margin-bottom: 15px; border-left: 5px solid #3498db; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    a { color: #3498db; text-decoration: none; font-weight: bold; }
+    a:hover { text-decoration: underline; }
 `;
 document.head.appendChild(cssAdmin);
 
-// 2. JavaScript membangun form HTML di layar
 document.body.innerHTML = `
     <div class="container">
-        <h2>Panel Admin (100% JS)</h2>
-        <p><a href="../public/index.html">Lihat Halaman Pengunjung</a></p>
+        <h2>Panel Admin Portofolio</h2>
+        <p><a href="../public/beranda/index.html">⬅ Kembali ke Halaman Public</a></p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
         
         <form id="formProject">
-            <input type="text" id="judulInput" placeholder="Judul Project" required>
-            <textarea id="deskripsiInput" placeholder="Deskripsi Singkat" rows="4" required></textarea>
-            <button type="submit">Simpan Data JS</button>
+            <label for="judulInput"><strong>Judul Project:</strong></label>
+            <input type="text" id="judulInput" placeholder="Contoh: Aplikasi Kasir JS" required>
+            
+            <label for="deskripsiInput"><strong>Deskripsi Singkat:</strong></label>
+            <textarea id="deskripsiInput" placeholder="Jelaskan singkat tentang project ini..." rows="4" required></textarea>
+            
+            <button type="submit">Simpan Project Baru</button>
         </form>
 
-        <hr>
-        <h3>Data Tersimpan:</h3>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+        
+        <h3>Daftar Project Tersimpan:</h3>
         <ul id="listProjectAdmin"></ul>
     </div>
 `;
 
-// 3. Logika JavaScript untuk menyimpan dan menampilkan data
 const formProject = document.getElementById("formProject");
 const listProjectAdmin = document.getElementById("listProjectAdmin");
 
@@ -41,11 +45,17 @@ function tampilkanProjectAdmin() {
     let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
     listProjectAdmin.innerHTML = "";
     
+    if (daftarProyek.length === 0) {
+        listProjectAdmin.innerHTML = "<p style='color: #7f8c8d; font-style: italic;'>Belum ada project yang diinput.</p>";
+        return;
+    }
+    
     daftarProyek.forEach((proyek, index) => {
         let li = document.createElement("li");
         li.innerHTML = `
-            <strong>${proyek.judul}</strong><br>${proyek.deskripsi}<br>
-            <button class="btn-hapus" onclick="hapusProject(${index})">Hapus</button>
+            <strong>${proyek.judul}</strong><br>
+            <p style="margin: 5px 0 10px 0; color: #555;">${proyek.deskripsi}</p>
+            <button class="btn-hapus" onclick="window.hapusProject(${index})">Hapus Project</button>
         `;
         listProjectAdmin.appendChild(li);
     });
@@ -60,11 +70,11 @@ formProject.addEventListener("submit", function(event) {
     daftarProyek.push({ judul: judul, deskripsi: deskripsi });
     localStorage.setItem("proyek", JSON.stringify(daftarProyek));
     
+    alert("Project berhasil disimpan!");
     formProject.reset();
     tampilkanProjectAdmin();
 });
 
-// Perlu mengaitkan fungsi hapus ke object window agar terbaca oleh onclick di HTML buatan JS
 window.hapusProject = function(index) {
     let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
     daftarProyek.splice(index, 1);
