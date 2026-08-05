@@ -1,91 +1,147 @@
-// admin/admin.js
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Asrama - Merapi Singgalang</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
-// 1. JavaScript menyuntikkan CSS Admin
-const cssAdmin = document.createElement('style');
-cssAdmin.innerHTML = `
-    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f8f9fa; padding: 20px; color: #333; }
-    .container { background: white; padding: 30px; border-radius: 12px; max-width: 600px; margin: 30px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-    h2 { color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
-    input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
-    button { background: #27ae60; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 6px; font-weight: bold; }
-    button:hover { background: #2ecc71; }
-    .btn-hapus { background: #e74c3c; margin-top: 10px; padding: 6px 12px; font-size: 12px; }
-    .btn-hapus:hover { background: #c0392b; }
-    ul { list-style-type: none; padding: 0; }
-    li { background: #fdfdfd; padding: 15px; margin-bottom: 15px; border-left: 5px solid #3498db; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    a { color: #3498db; text-decoration: none; font-weight: bold; }
-    a:hover { text-decoration: underline; }
-`;
-document.head.appendChild(cssAdmin);
+    <!-- Konfigurasi Font Custom Tailwind -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              lora: ['Lora', 'serif'],
+              playfair: ['Playfair Display', 'serif'],
+            }
+          }
+        }
+      }
+    </script>
 
-// 2. JavaScript membangun form HTML Admin di layar
-document.body.innerHTML = `
-    <div class="container">
-        <h2>Panel Admin Portofolio</h2>
-        <p><a href="../public/index.html">⬅ Kembali ke Halaman Public</a></p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+    <style>
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
         
-        <form id="formProject">
-            <label for="judulInput"><strong>Judul Project:</strong></label>
-            <input type="text" id="judulInput" placeholder="Contoh: Aplikasi Kasir JS" required>
-            
-            <label for="deskripsiInput"><strong>Deskripsi Singkat:</strong></label>
-            <textarea id="deskripsiInput" placeholder="Jelaskan singkat tentang project ini..." rows="4" required></textarea>
-            
-            <button type="submit">Simpan Project Baru</button>
-        </form>
+        /* Custom Scrollbar untuk Timeline */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d6d3c9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
 
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
-        
-        <h3>Daftar Project Tersimpan:</h3>
-        <ul id="listProjectAdmin"></ul>
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-[#f9f8f6] font-lora overflow-x-hidden relative pb-24">
+
+    <!-- HERO SLIDER -->
+    <div id="hero-section" class="relative py-28 md:py-36 w-full bg-[#171412] flex flex-col items-center justify-center overflow-hidden">
+        <div id="hero-backgrounds" class="absolute inset-0 w-full h-full bg-[#171412]">
+            <!-- Gambar Hero akan dimasukkan via JS -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#171412] via-[#171412]/80 to-[#171412]/40 backdrop-blur-[1px] z-10"></div>
+        </div>
+        <div class="relative z-20 max-w-4xl mx-auto px-4 text-center reveal">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 font-playfair drop-shadow-lg">Profil Asrama</h1>
+            <div class="w-16 h-1.5 bg-amber-500 mx-auto rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]"></div>
+        </div>
     </div>
-`;
 
-// 3. Logika JavaScript untuk menyimpan dan menampilkan data
-const formProject = document.getElementById("formProject");
-const listProjectAdmin = document.getElementById("listProjectAdmin");
+    <!-- 1. SEJARAH -->
+    <div id="sejarah" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 mb-24 scroll-mt-28 reveal">
+        <div class="text-center mb-10"><div class="w-12 h-1 bg-red-800 mx-auto rounded-full mb-6"></div></div>
+        <div class="relative mt-8 perspective-1000">
+            <div class="absolute inset-0 bg-[#e8e4db] transform translate-y-4 -rotate-1 rounded-sm shadow-md"></div>
+            <div class="absolute inset-0 bg-[#f4f2ec] transform translate-y-2 rotate-1 rounded-sm shadow-md"></div>
+            
+            <div id="sejarah-card" class="relative bg-[#fcfbf9] p-8 md:p-14 rounded-sm shadow-2xl border border-[#e8e4db] z-10 flex flex-col min-h-[400px] transition-all duration-500">
+                <div class="flex justify-between items-center mb-8 border-b border-[#e8e4db] pb-4">
+                    <span id="sejarah-judul" class="text-amber-600 font-bold italic font-serif text-lg">Memuat...</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-stone-900 font-playfair">Catatan Sejarah</h2>
+                </div>
+                <div class="flex-grow flex items-center overflow-hidden">
+                    <p id="sejarah-isi" class="text-stone-700 leading-relaxed text-lg md:text-xl text-justify whitespace-pre-line font-lora">
+                        Memuat catatan lembar sejarah...
+                    </p>
+                </div>
+                <div class="mt-12 flex justify-between items-center text-sm font-bold tracking-widest font-sans uppercase">
+                    <button id="btn-prev-sejarah" class="flex items-center gap-2 text-stone-300 transition-colors">← Balik Lembar</button>
+                    <span id="sejarah-indikator" class="text-stone-400 font-serif italic text-base lowercase">1 / 1</span>
+                    <button id="btn-next-sejarah" class="flex items-center gap-2 text-stone-300 transition-colors">Lanjut Baca →</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-function tampilkanProjectAdmin() {
-    let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
-    listProjectAdmin.innerHTML = "";
-    
-    if (daftarProyek.length === 0) {
-        listProjectAdmin.innerHTML = "<p style='color: #7f8c8d; font-style: italic;'>Belum ada project yang diinput.</p>";
-        return;
-    }
-    
-    daftarProyek.forEach((proyek, index) => {
-        let li = document.createElement("li");
-        li.innerHTML = `
-            <strong>${proyek.judul}</strong><br>
-            <p style="margin: 5px 0 10px 0; color: #555;">${proyek.deskripsi}</p>
-            <button class="btn-hapus" onclick="hapusProject(${index})">Hapus Project</button>
-        `;
-        listProjectAdmin.appendChild(li);
-    });
-}
+    <!-- 3 & 4. VISI MISI & TIMELINE -->
+    <div id="visimisi" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 scroll-mt-28">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+            
+            <div class="lg:col-span-5 flex flex-col gap-6 reveal">
+                <div class="text-left mb-2"><h2 class="text-3xl font-bold text-stone-900 font-playfair mb-3">Tujuan Asrama</h2><div class="w-12 h-1 bg-amber-500 rounded-full"></div></div>
+                <div class="bg-[#171412] text-white p-6 md:p-8 rounded-sm shadow-lg relative overflow-hidden group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500 rounded-full blur-[60px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    <h3 class="text-2xl font-bold font-playfair mb-4 text-amber-500">Visi Kami</h3>
+                    <p id="teks-visi" class="text-stone-300 leading-relaxed text-base">Memuat...</p>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-sm shadow-[4px_4px_0px_0px_rgba(23,20,18,0.05)] border border-[#e8e4db] hover:-translate-y-1 transition-all duration-300">
+                    <h3 class="text-2xl font-bold font-playfair mb-4 text-red-800">Misi Kami</h3>
+                    <p id="teks-misi" class="text-stone-600 leading-relaxed text-base whitespace-pre-line">Memuat...</p>
+                </div>
+            </div>
 
-formProject.addEventListener("submit", function(event) {
-    event.preventDefault();
-    let judul = document.getElementById("judulInput").value;
-    let deskripsi = document.getElementById("deskripsiInput").value;
-    
-    let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
-    daftarProyek.push({ judul: judul, deskripsi: deskripsi });
-    localStorage.setItem("proyek", JSON.stringify(daftarProyek));
-    
-    alert("Project berhasil disimpan!");
-    formProject.reset();
-    tampilkanProjectAdmin();
-});
+            <div id="timeline" class="lg:col-span-7 reveal delay-200">
+                <div class="flex justify-between items-center mb-8 border-b border-[#e8e4db] pb-4">
+                    <div class="text-left">
+                        <h2 class="text-3xl font-bold text-stone-900 font-playfair mb-3">Garis Waktu</h2>
+                        <div class="w-12 h-1 bg-amber-500 rounded-full"></div>
+                    </div>
+                </div>
+                <!-- Container Scroll Timeline -->
+                <div class="max-h-[600px] overflow-y-auto pr-4 custom-scrollbar pb-6">
+                    <div id="timeline-container" class="relative border-l-2 border-amber-200 ml-3 md:ml-4 space-y-8 py-2">
+                        <p class="text-stone-500">Memuat timeline...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-// Menghubungkan fungsi hapus ke object window agar bisa dipanggil lewat tombol HTML buatan JS
-window.hapusProject = function(index) {
-    let daftarProyek = JSON.parse(localStorage.getItem("proyek")) || [];
-    daftarProyek.splice(index, 1);
-    localStorage.setItem("proyek", JSON.stringify(daftarProyek));
-    tampilkanProjectAdmin();
-};
+    <!-- 5. STRUKTUR KEPENGURUSAN -->
+    <div id="kepengurusan" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-32 mb-20 scroll-mt-28 reveal">
+        <div class="text-center mb-16">
+            <h4 class="text-amber-600 font-bold tracking-widest text-xs uppercase font-sans mb-3">Struktur Organisasi</h4>
+            <h2 class="text-4xl font-bold text-stone-900 font-playfair mb-4">Kepengurusan Asrama</h2>
+            <div class="w-16 h-1 bg-red-800 mx-auto rounded-full"></div>
+            <p class="text-stone-500 text-sm mt-4 italic">Ketuk foto untuk melihat pose lainnya</p>
+        </div>
 
-window.onload = tampilkanProjectAdmin;
+        <div id="pengurus-inti-container" class="mb-20 hidden">
+            <h3 class="text-center text-xl font-bold text-stone-400 uppercase tracking-widest font-sans mb-10">Pengurus Inti</h3>
+            <div id="ketua-container" class="flex justify-center mb-12"></div>
+            <div id="sekre-bendum-container" class="flex flex-col sm:flex-row justify-center gap-12 sm:gap-24"></div>
+        </div>
+
+        <div id="divisi-container">
+            <h3 class="text-center text-xl font-bold text-stone-400 uppercase tracking-widest font-sans mb-10">Divisi & Anggota</h3>
+            <div id="list-divisi" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:[&>*:nth-child(odd):last-child]:col-span-2 lg:[&>*:nth-child(odd):last-child]:max-w-2xl lg:[&>*:nth-child(odd):last-child]:mx-auto lg:[&>*:nth-child(odd):last-child]:w-full">
+                <!-- Divisi akan di-render di sini -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Skrip Utama -->
+    <!-- Ganti src dengan path file Firebase SDK yang kamu pakai jika tidak menggunakan CDN -->
+    <script type="module" src="profil.js"></script>
+</body>
+</html>
