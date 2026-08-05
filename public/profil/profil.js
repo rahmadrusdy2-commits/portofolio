@@ -1,15 +1,15 @@
-// Konfigurasi Firebase (SESUAIKAN DENGAN KONFIGURASI PROYEKMU)
+// Konfigurasi Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-    // Masukkan API Key dan konfigurasi Firebase kamu di sini
-    apiKey: "API_KEY_KAMU",
-    authDomain: "DOMAIN_KAMU.firebaseapp.com",
-    projectId: "PROJECT_ID_KAMU",
-    storageBucket: "BUCKET_KAMU.appspot.com",
-    messagingSenderId: "SENDER_ID_KAMU",
-    appId: "APP_ID_KAMU"
+  apiKey: "AIzaSyCaEQdi5jLRDEdjnMxTjOOv6fvYmjnxC24",
+  authDomain: "portofilio-43df6.firebaseapp.com",
+  projectId: "portofilio-43df6",
+  storageBucket: "portofilio-43df6.firebasestorage.app",
+  messagingSenderId: "139867674195",
+  appId: "1:139867674195:web:07410e217a9b5586e198a6",
+  measurementId: "G-BZZH0RWVCF"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -41,7 +41,7 @@ window.flipCard = function(element) {
 
 // === KOMPONEN KARTU ANGGOTA (Dibuat via string) ===
 function createMemberCard(member, role, isMain = false) {
-    const f1 = member.foto1 || `https://ui-avatars.com/api/?name=${member.nama}&background=991b1b&color=fff&size=256`;
+    const f1 = member.foto1 || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.nama)}&background=991b1b&color=fff&size=256`;
     const f2 = member.foto2 || f1; 
     const sizeClasses = isMain ? "w-48 h-48 md:w-56 md:h-56" : "w-36 h-36 md:w-44 md:h-44";
     const isKoordinator = role === "Koordinator";
@@ -64,7 +64,6 @@ function createMemberCard(member, role, isMain = false) {
     </div>
     `;
 }
-
 
 // === LOGIKA UTAMA AMBIL DATA FIREBASE ===
 async function fetchData() {
